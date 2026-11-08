@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         禁漫
 // @namespace    http://tampermonkey.net/
-// @version      2026-06-30
+// @version      2026-11-08
 // @description  try to remove popup ad!
 // @author       You
 // @match        https://18comic.com/*
@@ -63,6 +63,26 @@
         document.querySelectorAll('div.modal-backdrop').forEach((item) => item.remove());
       },
     },
+
+    {
+      id: 'remove-album-detail',
+      enabled: true,
+
+      // 扫描范围
+      scope: 'div[data-group*="album_detail"]',
+
+      // 存在即命中
+      match() {
+        return true;
+      },
+
+      // 同时移除遮罩层
+      action({ element }) {
+        element.remove();
+
+        document.querySelectorAll('div.modal-backdrop').forEach((item) => item.remove());
+      },
+    },
   ];
 
   /**
@@ -86,7 +106,7 @@
           window,
         };
 
-        if (!rule.match(context)) {
+        if (rule.match && !rule.match(context)) {
           continue;
         }
 
